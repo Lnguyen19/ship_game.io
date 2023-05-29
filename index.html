@@ -20,7 +20,7 @@
             height: 180px;
             width: 230px;
             position: relative;
-            background-image: url('boat.jpg');
+            background-image: url('boat.JPG');
             background-position: -20px 29px;
             background-size: cover;
         }
@@ -124,7 +124,7 @@
                 //cooling = 0;
             
                 canShoot = true; // Set canShoot to true after the cooldown (2 seconds)
-                coolDown.style.backgroundImage = 'url(100percent.jpg)';
+                coolDown.style.backgroundImage = 'url(100percent.JPG)';
             }, 2000);
         }
 
@@ -178,7 +178,7 @@
         coolDown.style.width = 90 + 'px';
         coolDown.style.left = 15+'px';
         coolDown.style.bottom = 620+'px'
-        coolDown.style.backgroundImage = 'url(100percent.jpg)';
+        coolDown.style.backgroundImage = 'url(100percent.JPG)';
         coolDown.style.backgroundPosition = '0px 15px';
         coolDown.style.backgroundSize = '80px 70px';
         coolDown.style.backgroundRepeat = 'no-repeat';
@@ -197,18 +197,18 @@ document.getElementById('mainGame').appendChild(coolDown)
         enemy.style.backgroundSize = '180px 230px';
         enemy.style.backgroundRepeat = 'no-repeat';
        if(wave==0){
-        enemy.style.backgroundImage = 'url(enemyWeak.jpg)';
+        enemy.style.backgroundImage = 'url(enemyWeak.JPG)';
             weakEnemyHealth = 5;
        }
        else  if (wave == 1) {
          enemyPosition = 1300;
-            enemy.style.backgroundImage = 'url(enemyOne.jpg)';
+            enemy.style.backgroundImage = 'url(enemyOne.JPG)';
             shipPosition = 0;
 
             weakEnemyHealth = 8;
         } else if (wave==2){
              enemyPosition = 1300;
-            enemy.style.backgroundImage = 'url(enemyTwo.jpg)';
+            enemy.style.backgroundImage = 'url(enemyTwo.JPG)';
             weakEnemyHealth = 12;
             shipPosition = 0;
         }
