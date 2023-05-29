@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        #mainGame {
+            height: 680px;
+            width: 1500px;
+            border: solid;
+        }
+
+        #water {
+            height: 340px;
+            width: 1500px;
+            position: relative;
+            top: 340px;
+            background-color: skyblue;
+        }
+
+        #ship {
+            height: 180px;
+            width: 230px;
+            position: relative;
+            background-image: url('boat.jpg');
+            background-position: -20px 29px;
+            background-size: cover;
+        }
+    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+</head>
+<body>
+    <div id="mainGame">
+        <div id="water"></div>
+        <div id="ship"></div>
+    </div>
+</body>
+<script type="text/javascript">
+    var weakEnemyHealth = 5;
+    var shipPosition = 0;
+    var playerHealth = 10;
+    var wave = 0;
+    var enemyPosition = 1300;
+    var enemyOneAlive = true;
+    var enemy;
+    var lefty = enemyPosition + 230;
+    var righty = enemyPosition - 230;
+    var coolDown;
+    var enemyHealthBar_
+    var green
+    var green_
+    var playerBar;
+    var go; // Declare the go variable outside the spawnEnemy function
+    var canShoot = true; // Flag to control shooting cooldown
+    playerHealthBar();
+    enemyHealthBar();
+    cooldownFeature();
+    spawnEnemy();
+
+    var ship = document.getElementById("ship");
+    window.addEventListener("keydown", mover);
+    ship.style.right = shipPosition + 'px';
+    ship.style.bottom = 179 + "px";
+
+    setInterval(function() {
+        console.log(weakEnemyHealth);
+    }, 20);
+
+    function mover(event) {
+        if (event.key == "ArrowRight") {
+            shipPosition = shipPosition + 5;
+            ship.style.left = shipPosition + 'px';
+        } else if (event.key == "ArrowLeft") {
+            shipPosition = shipPosition - 5;
+            ship.style.left = shipPosition + 'px';
+        } else if (event.key == 'ArrowUp' && canShoot) { // Check if canShoot is true
+            canShoot = false; // Set canShoot to false to start the cooldown
+            var bulletPosition = shipPosition + 190;
+            var bullet = document.createElement('div');
+            bullet.style.width = 8 + 'px';
+            bullet.style.height = 8 + 'px';
+            bullet.style.border = 'solid';
+            bullet.style.position = 'relative';
+            bullet.style.backgroundColor = "red";
+            bullet.style.bottom = parseInt(ship.style.bottom) + parseInt(ship.style.height) - 20 + 'px';
+            document.getElementById('mainGame').appendChild(bullet);
+
+            var shoot = setInterval(function() {
+                bulletPosition = bulletPosition + 10;
+                bullet.style.left = bulletPosition + 'px';
+                bullet.style.bottom = 460 + 'px';
+                if (bulletPosition - shipPosition >= 700 || bulletPosition >= 1480) {
+                    document.getElementById('mainGame').removeChild(bullet);
+                    clearInterval(shoot);
+                }
+
+                if (bulletcollision(bulletPosition) == true) {
+                    weakEnemyHealth = weakEnemyHealth - 1;
+
+                        currentGreen_ = weakEnemyHealth * 20; // Update currentGreen based on player health
+    green.style.width = currentGreen_ + 'px';
+
+
+
+                    if (weakEnemyHealth <= 0) {
+                        enemyOneAlive = false;
+                        wave++;
+                        if (enemyOneAlive == false) {
+                            document.getElementById('mainGame').removeChild(enemy);
+                            clearInterval(go);
+                            spawnEnemy();
+                            currentGreen_ = weakEnemyHealth * 20; // Update currentGreen based on player health
+    green.style.width = currentGreen_ + 'px';
+
+                        }
+                    }
+                    document.getElementById('mainGame').removeChild(bullet);
+                    clearInterval(shoot);
+                }
+            }, 50);
+          
+            
+            setTimeout(function() {
+                //cooling = 0;
+            
+                canShoot = true; // Set canShoot to true after the cooldown (2 seconds)
+                coolDown.style.backgroundImage = 'url(100percent.jpg)';
+            }, 2000);
+        }
+
+        if (shipPosition <= 0) {
+            shipPosition = 0;
+            ship.style.left = shipPosition + 'px';
+        } else if (shipPosition >= 1270) {
+            shipPosition = 1270;
+            ship.style.left = shipPosition + 'px';
+        }
+    }
+
+    function enemyMove() {
+        enemyPosition = enemyPosition - 10;
+        enemy.style.left = enemyPosition + 'px';
+
+        if (enemyPosition > shipPosition && enemyPosition < shipPosition + 230) {
+            console.log('matched');
+            playerHealth--;
+            currentGreen = playerHealth * 20; // Update currentGreen based on player health
+    green_.style.width = currentGreen + 'px';
+            if (playerHealth <= 0) {
+                alert('Game Over!');
+            }
+ 
+
+        }
+    }
+
+    function moveForward() {
+        enemyPosition = enemyPosition - 2;
+        enemy.style.left = enemyPosition + 'px';
+    }
+
+    function moveBackward() {
+        enemyPosition = enemyPosition + 2;
+        enemy.style.left = enemyPosition + 'px';
+    }
+
+    function bulletcollision(bulletPosition) {
+        if (bulletPosition > enemyPosition && bulletPosition < enemyPosition + righty) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function cooldownFeature(){
+        coolDown = document.createElement("div");
+        coolDown.style.position = 'absolute';
+        coolDown.style.height = 90 + 'px';
+        coolDown.style.width = 90 + 'px';
+        coolDown.style.left = 15+'px';
+        coolDown.style.bottom = 620+'px'
+        coolDown.style.backgroundImage = 'url(100percent.jpg)';
+        coolDown.style.backgroundPosition = '0px 15px';
+        coolDown.style.backgroundSize = '80px 70px';
+        coolDown.style.backgroundRepeat = 'no-repeat';
+document.getElementById('mainGame').appendChild(coolDown)
+    }
+
+    function spawnEnemy() {
+        enemy = document.createElement("div");
+        enemy.style.position = 'relative';
+        enemy.style.height = 220 + 'px';
+        enemy.style.width = 230 + 'px';
+        enemyPosition = enemyPosition-100;
+        enemy.style.left = enemyPosition + 'px';
+        enemy.style.bottom = 402 + 'px';
+        enemy.style.backgroundPosition = '0px 29px';
+        enemy.style.backgroundSize = '180px 230px';
+        enemy.style.backgroundRepeat = 'no-repeat';
+       if(wave==0){
+        enemy.style.backgroundImage = 'url(enemyWeak.jpg)';
+            weakEnemyHealth = 5;
+       }
+       else  if (wave == 1) {
+         enemyPosition = 1300;
+            enemy.style.backgroundImage = 'url(enemyOne.jpg)';
+            shipPosition = 0;
+
+            weakEnemyHealth = 8;
+        } else if (wave==2){
+             enemyPosition = 1300;
+            enemy.style.backgroundImage = 'url(enemyTwo.jpg)';
+            weakEnemyHealth = 12;
+            shipPosition = 0;
+        }
+        else {
+
+            enemyPosition = 1400;
+            alert("You won!");
+        }
+
+        document.getElementById('mainGame').appendChild(enemy);
+        go = setInterval(enemyMove, 500);
+        enemyOneAlive = true;
+    }
+    function playerHealthBar(){
+     currentGreen = (playerHealth*20)
+      playerBar = document.createElement('div');
+      playerBar.style.position = 'absolute';
+      playerBar.style.height = 30 + 'px';
+      playerBar.style.width = 200 + 'px';
+      playerBar.style.left = 400+'px';
+      playerBar.style.bottom = 620+'px'
+      playerBar.style.backgroundColor = "red";
+      document.getElementById('mainGame').appendChild(playerBar);
+      green_ = document.createElement('div');
+      green_.style.position = 'absolute';
+      green_.style.height = 30 + 'px';
+      green_.style.width = currentGreen + 'px';
+      green_.style.left = 400+'px';
+      green_.style.bottom = 620+'px'
+      green_.style.backgroundColor = "green";
+      document.getElementById('mainGame').appendChild(green_);
+    
+    }
+function enemyHealthBar(){
+     currentGreen_ = (weakEnemyHealth*20)
+      enemyHealthBar_ = document.createElement('div');
+     enemyHealthBar_.style.position = 'absolute';
+      enemyHealthBar_.style.height = 30 + 'px';
+      enemyHealthBar_.style.width = 200 + 'px';
+      enemyHealthBar_.style.left = 900+'px';
+      enemyHealthBar_.style.bottom = 620+'px'
+      enemyHealthBar_.style.backgroundColor = "red";
+      document.getElementById('mainGame').appendChild(enemyHealthBar_);
+      green = document.createElement('div');
+      green.style.position = 'absolute';
+      green.style.height = 30 + 'px';
+      green.style.width = currentGreen + 'px';
+      green.style.left = 900+'px';
+      green.style.bottom = 620+'px'
+      green.style.backgroundColor = "green";
+      document.getElementById('mainGame').appendChild(green);
+    
+    }
+
+</script>
+</html>
